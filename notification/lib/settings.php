@@ -56,7 +56,7 @@ function get_notification_message()
     return new admin_setting_confightmleditor(
         'notification_email_message', 
         'E-mail Mensagem', 
-        $tip, '', PARAM_TEXT
+        $tip, '', PARAM_RAW
     );
 }
 
