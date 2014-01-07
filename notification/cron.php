@@ -7,14 +7,38 @@ require_once(__DIR__ . '/lib/cron.php');
 
 $config = array(
     'time'      => $CFG->notification_quiz_cron_time_execute,
-    'day'       => config_filter_day($CFG->notification_quiz_day),
-    'courses'   => explode(',', $CFG->notification_quiz_courses),
+    'days'       => config_filter_days($CFG->notification_quiz_day),
+    'courses'   => $CFG->notification_quiz_courses,
     'subject'   => $CFG->notification_email_subject,
     'message'   => $CFG->notification_email_message,
 ); 
 
-//iniciando processamento course / course
-foreach($config['courses'] as $course_id) {
+$hoje = time();
+
+$sql = "select id, course, name, timeopen, timeclose
+        from {quiz}
+	where timeclose <> 0
+            and course IN ({$config['courses']})
+            and {$hoje} >= timeopen
+            order by course, id, timeclose asc";
+            
+$quizs = $DB->get_records_sql($sql);
+
+foreach ($quizs as $quiz) {
+    //descobrindo quanto tempo falta para encerrar uma atividade
+    $dias_encerrar = round( ($quiz->timeclose - time()) / 60 / 60 / 24, 0) ; 
     
+    //atividade não está na data certa da notificação
+    if (! in_array($dias_encerrar, $config['days'])) continue;
     
+    //pegar nome do curso
+    
+    //pegar alunos do curso
+    
+    //pegar alunos que não entregaram atividade
 }
+
+
+
+
+
