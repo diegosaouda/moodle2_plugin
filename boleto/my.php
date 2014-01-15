@@ -6,10 +6,14 @@
     
     $download = optional_param('download', 0, PARAM_BOOL);
     $mes = optional_param('mes', 0, PARAM_INT);
+	$ano = optional_param('ano', date('Y'), PARAM_INT);
     
-    $path_boleto = $CFG->dataroot . DIRECTORY_SEPARATOR . 'boleto' . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR;
-    
-    
+    $path_boleto = $CFG->dataroot . "/boleto/{$ano}/";
+	
+	$dates = array_map(function($value) {
+		return basename($value);
+	}, glob(dirname($path_boleto).'/*'));
+	
     if($download){
         
         $path_boleto .= str_pad($mes,2,0,STR_PAD_LEFT) . DIRECTORY_SEPARATOR . $USER->username . '.pdf';
@@ -39,8 +43,8 @@
     $PAGE->set_context(null);
         
     //titulo e heading (titulo em h2)
-    $PAGE->set_title("Boletos - ano " . date('Y'));
-    $PAGE->set_heading("Boletos - ano " . date('Y'));
+    $PAGE->set_title("Boletos - ano " . $ano);
+    $PAGE->set_heading("Boletos - ano " . $ano);
             
     echo $OUTPUT->header();
 ?>
@@ -49,7 +53,18 @@
         
     
     <h3 class="main">Meus Boletos</h3>    
-
+		
+	<p style="text-align:center;">
+		<select onchange="if (this.value !=='') { window.location.href='<?php echo $PAGE->url; ?>?ano=' + this.value ; }">
+			<option>Selecionar outro ano</option>
+			
+			<?php foreach($dates as $date): ?>
+				<option value="<?php echo $date ?>"><?php echo $date ?></option>
+			<?php endforeach; ?>
+		</select>
+	</p>
+	
+	
     <p style="text-align:center;">Esse espaço é destinado a impressão de boletos</p>                
 
     <table class="generaltable boxaligncenter" style="width: 300px;">
