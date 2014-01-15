@@ -8,6 +8,7 @@ if ($hassiteconfig) {
     $settings->add(get_quiz_courses());
     $settings->add(get_notification_subject());
     $settings->add(get_notification_message());
+    $settings->add(get_list_mail());
     
     $ADMIN->add('localplugins', $settings);
 }

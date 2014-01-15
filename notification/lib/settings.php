@@ -45,13 +45,7 @@ function get_notification_subject()
 function get_notification_message()
 {
     $tip = '';
-    $tip .= 'Informe a mensagem do e-mail de notificação. Algumas palavras chaves podem ser usadas, como: <br />';
-    $tip .= '<br /><b>{user.firstname}</b> : Primeiro nome do usuário';
-    $tip .= '<br /><b>{user.lastname}</b> : Último nome do usuário';
-    $tip .= '<br /><b>{course.name}</b> : Nome do curso';
-    $tip .= '<br /><b>{quiz.name}</b> : Nome da atividade "QUIZ"';
-    $tip .= '<br />As palavras chaves serão substituidas de acordo com a necessidade de quem será informado';
-    
+    $tip .= 'Informe a mensagem do e-mail de notificação.';
     
     return new admin_setting_confightmleditor(
         'notification_email_message', 
@@ -60,6 +54,16 @@ function get_notification_message()
     );
 }
 
+
+//mensagem de notificação
+function get_list_mail()
+{
+    return new admin_setting_configtextarea(
+        'notification_email_users', 
+        'Administradores que receberam notificação de envio', 
+        'Separe os e-mail por ; caso exista mais de um', '', PARAM_RAW
+    );
+}
 
 /**
  * Retorna a lista de cursos disponívei
