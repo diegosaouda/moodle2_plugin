@@ -56,10 +56,10 @@
 		
 	<p style="text-align:center;">
 		<select onchange="if (this.value !=='') { window.location.href='<?php echo $PAGE->url; ?>?ano=' + this.value ; }">
-			<option>Selecionar outro ano</option>
+			<option value="">Selecionar outro ano</option>
 			
 			<?php foreach($dates as $date): ?>
-				<option value="<?php echo $date ?>"><?php echo $date ?></option>
+				<option <?php if ($date == $ano): echo 'selected="selected"';  endif; ?> value="<?php echo $date ?>"><?php echo $date ?></option>
 			<?php endforeach; ?>
 		</select>
 	</p>
